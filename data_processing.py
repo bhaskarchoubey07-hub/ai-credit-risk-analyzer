@@ -3,9 +3,12 @@ AI Credit Risk Analyzer - Data Processing
 Handles dataset loading, preprocessing, and feature preparation.
 """
 
-import pandas as pd
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+from generate_dataset import generate_dataset
 
 
 # Expected feature columns for model training and prediction
@@ -21,9 +24,19 @@ FEATURE_COLUMNS = [
 ]
 
 
+def ensure_dataset_exists(filepath: str = "dataset/loan_dataset.csv") -> Path:
+    """Ensure the training dataset exists, generating it if necessary."""
+    path = Path(filepath)
+    if path.exists():
+        return path
+
+    generate_dataset(path)
+    return path
+
+
 def load_dataset(filepath: str = "dataset/loan_dataset.csv") -> pd.DataFrame:
     """Load loan dataset from CSV."""
-    path = Path(filepath)
+    path = ensure_dataset_exists(filepath)
     if not path.exists():
         raise FileNotFoundError(f"Dataset not found at {filepath}")
     return pd.read_csv(path)

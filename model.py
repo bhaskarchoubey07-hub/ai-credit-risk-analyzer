@@ -11,7 +11,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from data_processing import load_dataset, preprocess_for_training
+from data_processing import ensure_dataset_exists, load_dataset, preprocess_for_training
 
 MODEL_PATH = Path("models/credit_model.pkl")
 
@@ -21,6 +21,7 @@ def train_model() -> dict:
     Train ensemble of Logistic Regression and Random Forest.
     Returns dict with models and metadata.
     """
+    ensure_dataset_exists()
     df = load_dataset()
     X, y = preprocess_for_training(df)
     
